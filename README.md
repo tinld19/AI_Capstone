@@ -2,7 +2,7 @@
 
 # run build elasticSearch Docker
 
-step 1: pip install -r requirements.txt \n
+step 1: pip install -r requirements.txt <br>
 step 2: docker compose up —build -d
 
 # run web server
