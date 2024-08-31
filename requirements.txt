@@ -1,0 +1,13 @@
+sentence-transformers
+semantic-router
+python-dotenv
+pandas
+numpy
+fastapi
+uvicorn
+scipy
+openai
+singleton-decorator
+python-dotenv
+elasticsearch
+PyMuPDF

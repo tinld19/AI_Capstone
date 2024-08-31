@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.14.3
+    container_name: es-container
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - "9200:9200"
+    mem_limit: 1gb
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - ds_bridge
+
+  # ai-service:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: ai-service-container
+  #   ports:
+  #     - "8000:8000"
+  #   volumes:
+  #     - .:/app
+  #   networks:
+  #     - ds_bridge
+  #   depends_on:
+  #     - elasticsearch
+
+networks:
+  ds_bridge:
+    driver: bridge

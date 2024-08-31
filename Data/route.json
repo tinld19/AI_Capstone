@@ -1,0 +1,10 @@
+[
+   {"Khai báo hải quan": ["Tôi cần cung cấp thông tin gì để khai báo hải quan?", "Quá trình khai báo hải quan mất bao lâu?", "Làm thế nào để khai báo hải quan cho hàng hóa của tôi?"]},
+   {"Hỗ trợ khách hàng": ["Tôi cần liên hệ với ai nếu có vấn đề về đơn hàng?", "Có dịch vụ hỗ trợ 24/7 không?", "Tôi có thể thay đổi địa chỉ giao hàng không?"]},
+   {"Quy định và thủ tục vận chuyển": ["Tôi có thể gửi loại hàng hóa nào?", "Có quy định gì về kích thước và trọng lượng hàng hóa không?", "Những giấy tờ cần thiết để vận chuyển quốc tế là gì?"]},
+   {"Bảo hiểm hàng hóa": ["Hàng hóa của tôi có được bảo hiểm không?", "Tôi cần làm gì nếu hàng hóa bị mất hoặc hỏng?", "Phí bảo hiểm là bao nhiêu?"]},
+   {"Tư vấn vận chuyển": ["Loại hình vận chuyển nào phù hợp với hàng hóa của tôi?", "Làm thế nào để chọn dịch vụ vận chuyển tốt nhất?", "Có những dịch vụ nào hỗ trợ cho vận chuyển quốc tế?"]},
+   {"Điều kiện bảo quản hàng hóa":["Có dịch vụ bảo quản hàng lạnh không?", "Làm thế nào để vận chuyển hàng dễ hỏng?", "Bạn có hỗ trợ bảo quản hàng hóa đặc biệt như hóa chất không?"]},
+   {"Thủ tục nhập khẩu":["Tôi cần những giấy tờ gì để nhập khẩu hàng vào quốc gia X?", "Quy trình nhập khẩu cho hàng hóa của tôi như thế nào?", "Tôi có cần thuê dịch vụ khai báo hải quan riêng không?"]},
+   {"chitchat": ["thời tiết hôm nay thế nào?", "mọi thứ thế nào?", "thời tiết hôm nay đẹp quá", "thời tiết tệ quá", "đi ăn khoai tây chiên thôi"]}
+]
