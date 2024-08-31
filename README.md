@@ -2,11 +2,12 @@
 
 # run build elasticSearch Docker
 
-step 1: docker compose up —build -d
+step 1: pip install -r requirements.txt
+step 2: docker compose up —build -d
 
 # run web server
 
-step 2: python main.py
+step 1: python main.py
 
 # nếu lần đầu start project trên máy mới
 
