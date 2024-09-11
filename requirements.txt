@@ -11,3 +11,7 @@ singleton-decorator
 python-dotenv
 elasticsearch
 PyMuPDF
+geopy
+searoute
+paddleocr
+paddlepaddle
