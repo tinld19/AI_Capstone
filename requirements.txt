@@ -8,10 +8,11 @@ uvicorn
 scipy
 openai
 singleton-decorator
-python-dotenv
 elasticsearch
 PyMuPDF
 geopy
 searoute
 paddleocr
-paddlepaddle
+paddlepaddle-gpu
+opencv-python
+orjson

@@ -29,4 +29,4 @@ def load_route_layer(question, routes):
    domain = rl(question).name
    return domain
 
-routes = load_route()
+# routes = load_route()
