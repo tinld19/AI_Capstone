@@ -42,7 +42,7 @@ class OCRProcessor:
                   text = line[1][0]
                   list_text.append(text)
          data = "\n".join(list_text)
-         return data
+      return data
       
 # if __name__ == "__main__":
 #    ocr_processor = OCRProcessor()
