@@ -29,19 +29,54 @@ class OCRProcessor:
       doc.close()
       return image_paths
 
-   def predict_OCR(self, file_path):
+   def predict_OCR(self, file_path, output_folder="output_images"):
+      # if file_path.lower().endswith('.pdf'):
+      #    image_paths = self.convert_pdf_to_images(file_path)
+      # else:
+      #    image_paths = [file_path]
+      # for img_path in image_paths:
+      #    result = self.ocr.ocr(img_path)
+      #    list_text = []
+      #    for res in result:
+      #          for line in res:
+      #             text = line[1][0]
+      #             list_text.append(text)
+      #    data = "\n".join(list_text)
+      # return data
+   
+      if not os.path.exists(output_folder):
+         os.makedirs(output_folder)
+
+      # Xử lý file PDF thành ảnh nếu là file PDF
       if file_path.lower().endswith('.pdf'):
          image_paths = self.convert_pdf_to_images(file_path)
       else:
          image_paths = [file_path]
-      for img_path in image_paths:
+
+      list_text = []
+      for idx, img_path in enumerate(image_paths):
+         img = cv2.imread(img_path)
+         img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  
+
          result = self.ocr.ocr(img_path)
-         list_text = []
+
          for res in result:
                for line in res:
-                  text = line[1][0]
+                  points = line[0]
+                  text = line[1][0] 
+                  confidence = line[1][1]  
                   list_text.append(text)
-         data = "\n".join(list_text)
+
+                  points = [(int(x), int(y)) for x, y in points]
+
+                  cv2.polylines(img_rgb, [np.array(points)], isClosed=True, color=(0, 255, 0), thickness=2)
+
+                  cv2.putText(img_rgb, text, points[0], cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), 2)
+
+         output_image_path = os.path.join(output_folder, f"output_image_{idx+1}.png")
+         cv2.imwrite(output_image_path, cv2.cvtColor(img_rgb, cv2.COLOR_RGB2BGR))  
+
+      data = "\n".join(list_text)
       return data
       
 # if __name__ == "__main__":
