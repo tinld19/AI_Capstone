@@ -6,7 +6,7 @@ import os
 import cv2
 
 class OCRProcessor:
-   def __init__(self, use_angle_cls=True, use_gpu=True):
+   def __init__(self, use_angle_cls=True, use_gpu=False):
       self.ocr = PaddleOCR(use_angle_cls=use_angle_cls, use_gpu=use_gpu)
    
    def convert_pdf_to_images(self, pdf_path, output_base_dir="images", zoom=4):

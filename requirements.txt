@@ -13,6 +13,5 @@ PyMuPDF
 geopy
 searoute
 paddleocr
-paddlepaddle-gpu
 opencv-python
 orjson

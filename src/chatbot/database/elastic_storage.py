@@ -4,7 +4,7 @@ from scipy import spatial
 
 # "http://localhost:9200"
 class ElasticSearchHandler:
-   def __init__(self, index_name, es_host="http://localhost:9200"):
+   def __init__(self, index_name, es_host="http://elasticsearch:9200"):
       self.index_name = index_name
       self.model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
       self.es = Elasticsearch(hosts=[es_host])

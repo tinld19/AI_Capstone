@@ -22,19 +22,15 @@ services:
     networks:
       - ds_bridge
 
-  # ai-service:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   container_name: ai-service-container
-  #   ports:
-  #     - "8000:8000"
-  #   volumes:
-  #     - .:/app
-  #   networks:
-  #     - ds_bridge
-  #   depends_on:
-  #     - elasticsearch
+  fastapi:
+    build: .
+    container_name: fastapi-container
+    ports:
+      - "8000:8000"
+    depends_on:
+      - elasticsearch
+    networks:
+      - ds_bridge
 
 networks:
   ds_bridge:

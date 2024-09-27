@@ -24,6 +24,7 @@ class ChatBot:
       
    def load_data(self):
       processor = TextChunkProcessor()
-      base_dir = os.path.abspath(os.path.join(os.path.abspath(__file__), "../../../"))
-      file_path = os.path.join(base_dir, "Data", "knowledge.json")
+      # base_dir = os.path.abspath(os.path.join(os.path.abspath(__file__), "../../../"))
+      # file_path = os.path.join(base_dir, "Data", "knowledge.json")
+      file_path = "Data/knowledge.json"
       processor.read_data_from_file(file_path)

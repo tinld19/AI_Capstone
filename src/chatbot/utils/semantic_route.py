@@ -9,7 +9,7 @@ from semantic_router.encoders import HuggingFaceEncoder
 encoder = HuggingFaceEncoder()
 
 def load_route():
-   relative_path = os.path.join('..', 'AI_CAPSTONE', 'Data', 'route.json')
+   relative_path = "Data/route.json"
    file_path = os.path.abspath(relative_path)
    routes = []
    
