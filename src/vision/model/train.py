@@ -1,7 +1,7 @@
 import os
 from ultralytics import YOLO
 
-DATA_YAML_PATH = '/Users/mac/Documents/AI_Capstone/AI_Capstone/src/vision/data/data.yaml'  
+DATA_YAML_PATH = '/root/AI_Capstone/src/vision/data/data.yaml'  
 MODEL_NAME = 'yolov8s.pt'     
 EPOCHS = 100                  
 BATCH_SIZE = 16               
@@ -17,8 +17,7 @@ model.train(
     epochs=EPOCHS,  
     batch=BATCH_SIZE,   
     imgsz=IMG_SIZE,   
-    project=SAVE_PATH,  
-    name='yolov8s_custom',   
-    cache=True,              
-    verbose=True             
+    patience=20,
+    save_period=20,
+    device=0            
 )
