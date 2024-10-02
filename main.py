@@ -5,6 +5,7 @@ from fastapi import FastAPI, Request, Response, File, UploadFile
 from src.chatbot.search import ChatBot
 from src.SeaRoute.sea_route import SeaRoute
 from src.OCR.mainOCR import OCRDoc
+from src.vision.main_vision import VisionServices
 
 app = FastAPI()
 
@@ -35,14 +36,34 @@ async def get_location(request: Request, response: Response):
    location = seaRoute.get_location(address)
    return {"data": location}
 
+# @app.post("/extract-ocr")
+# async def extract_ocr(request: Request, response: Response):
+#    body = await request.body()
+#    item = orjson.loads(body)
+#    path_file = item.get("path_file")
+#    ocrDoc = OCRDoc()
+#    json_extract = ocrDoc.data_extract(path_file)
+#    return {"data": json_extract}
+
 @app.post("/extract-ocr")
-async def extract_ocr(request: Request, response: Response):
-   body = await request.body()
-   item = orjson.loads(body)
-   path_file = item.get("path_file")
+async def extract_ocr(file: UploadFile = File(...)):
+   contents = await file.read()
+   path_file = f"/tmp/{file.filename}"
+   with open(path_file, "wb") as f:
+      f.write(contents)
    ocrDoc = OCRDoc()
    json_extract = ocrDoc.data_extract(path_file)
    return {"data": json_extract}
+
+@app.post("/damaged-detect")
+async def deamged_detect(file: UploadFile = File(...)):
+   contents = await file.read()
+   path_file = f"/tmp_images/{file.filename}"
+   with open(path_file, "wb") as f:
+      f.write(contents)
+   visionServices = VisionServices()
+   number_of_damaged = visionServices.predict(path_file)
+   return {"detections": number_of_damaged}
 
 @app.get("/load-data-chat")
 async def load_data_chat(request: Request, response: Response):

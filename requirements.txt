@@ -15,3 +15,5 @@ searoute
 paddleocr
 opencv-python
 orjson
+ultralytics
+pillow
