@@ -3,38 +3,43 @@ from singleton_decorator import singleton
 from openai import AzureOpenAI as az
 from dotenv import load_dotenv
 from .prompt_tuning import PROMPT_CHAT
+import google.generativeai as genai
 
 load_dotenv()
+genai.configure(api_key=os.getenv('API_KEY'))
 
 @singleton
 class OpenAIClient:
    def __init__(self):
-      self.azure_endpoint = os.getenv('AZURE_ENDPOINT')
-      self.api_key = os.getenv('API_KEY')
-      self.api_version = os.getenv('API_VERSION', '2024-02-15-preview')
+      # self.azure_endpoint = os.getenv('AZURE_ENDPOINT')
+      # self.api_key = os.getenv('API_KEY')
+      # self.api_version = os.getenv('API_VERSION', '2024-02-15-preview')
       
-      if not self.azure_endpoint or not self.api_key:
-         raise ValueError("AZURE_ENDPOINT and API_KEY environment variables must be set")
+      # if not self.azure_endpoint or not self.api_key:
+      #    raise ValueError("AZURE_ENDPOINT and API_KEY environment variables must be set")
       
-      self.client = az(
-         azure_endpoint=self.azure_endpoint,
-         api_key=self.api_key,
-         api_version=self.api_version
-      )
+      # self.client = az(
+      #    azure_endpoint=self.azure_endpoint,
+      #    api_key=self.api_key,
+      #    api_version=self.api_version
+      # )
+      self.model = genai.GenerativeModel("gemini-1.5-flash")
+      
 
    def call_openai(self, domain, knowledge_base, question):
       prompt = PROMPT_CHAT.replace("{domain}", domain).replace("{knowledge_base}", knowledge_base).replace("{question}", question)
       
-      completion = self.client.chat.completions.create(
-         model='testing-auto-gen-testcase',
-         messages=[
-               {
-                  "role": "user",
-                  "content": prompt,
-               }
-         ],
-         max_tokens=1000,
-      )
+      # completion = self.client.chat.completions.create(
+      #    model='testing-auto-gen-testcase',
+      #    messages=[
+      #          {
+      #             "role": "user",
+      #             "content": prompt,
+      #          }
+      #    ],
+      #    max_tokens=1000,
+      # )
       
-      message_openai = completion.choices[0].message.content.lstrip("\n")
-      return message_openai
+      # message_openai = completion.choices[0].message.content.lstrip("\n")
+      message_openai = self.model.generate_content(prompt)
+      return message_openai.text

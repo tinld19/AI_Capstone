@@ -9,7 +9,6 @@ RUN apt-get update && apt-get install -y \
     libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
-# Cài đặt PaddlePaddle CPU (hoặc GPU nếu bạn có phần cứng hỗ trợ)
 RUN python -m pip install paddlepaddle==3.0.0b1 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
 
 COPY requirements.txt .

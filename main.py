@@ -2,10 +2,12 @@ import uvicorn
 import orjson
 from dataclasses import dataclass, field
 from fastapi import FastAPI, Request, Response, File, UploadFile
+from typing import List
 from src.chatbot.search import ChatBot
 from src.SeaRoute.sea_route import SeaRoute
 from src.OCR.mainOCR import OCRDoc
 from src.vision.main_vision import VisionServices
+import os
 
 app = FastAPI()
 
@@ -36,19 +38,15 @@ async def get_location(request: Request, response: Response):
    location = seaRoute.get_location(address)
    return {"data": location}
 
-# @app.post("/extract-ocr")
-# async def extract_ocr(request: Request, response: Response):
-#    body = await request.body()
-#    item = orjson.loads(body)
-#    path_file = item.get("path_file")
-#    ocrDoc = OCRDoc()
-#    json_extract = ocrDoc.data_extract(path_file)
-#    return {"data": json_extract}
-
 @app.post("/extract-ocr")
 async def extract_ocr(file: UploadFile = File(...)):
+   upload_folder = "/tmp_pdf"
+
+   if not os.path.exists(upload_folder):
+        os.makedirs(upload_folder)
+        
    contents = await file.read()
-   path_file = f"/tmp/{file.filename}"
+   path_file = f"/tmp_pdf/{file.filename}"
    with open(path_file, "wb") as f:
       f.write(contents)
    ocrDoc = OCRDoc()
@@ -56,14 +54,26 @@ async def extract_ocr(file: UploadFile = File(...)):
    return {"data": json_extract}
 
 @app.post("/damaged-detect")
-async def deamged_detect(file: UploadFile = File(...)):
-   contents = await file.read()
-   path_file = f"/tmp_images/{file.filename}"
-   with open(path_file, "wb") as f:
-      f.write(contents)
-   visionServices = VisionServices()
-   number_of_damaged = visionServices.predict(path_file)
-   return {"detections": number_of_damaged}
+async def damaged_detect(files: List[UploadFile] = File(...)):
+   upload_folder = "/tmp_images"
+   if not os.path.exists(upload_folder):
+      os.makedirs(upload_folder)
+
+   total_res = []
+
+   for file in files:
+      number_of_detections = {}
+      contents = await file.read()
+      path_file = os.path.join(upload_folder, file.filename)
+      with open(path_file, "wb") as f:
+         f.write(contents)
+      visionServices = VisionServices()
+      number_of_damaged, res_proportion, output_path = visionServices.detection_damage(path_file)
+      number_of_detections["file image"] = output_path
+      number_of_detections["number of damage"] = len(number_of_damaged)
+      number_of_detections["rate error"] = res_proportion
+      total_res.append(number_of_detections)
+   return {"detections": total_res}
 
 @app.get("/load-data-chat")
 async def load_data_chat(request: Request, response: Response):

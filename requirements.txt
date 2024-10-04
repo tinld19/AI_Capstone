@@ -17,3 +17,5 @@ opencv-python
 orjson
 ultralytics
 pillow
+python-multipart
+google-generativeai
