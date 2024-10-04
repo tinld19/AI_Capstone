@@ -10,7 +10,7 @@ class ChatBot:
       rl = load_route_layer(question, routes)
       elastic_storage = ElasticSearchHandler("docs_container")
       openai_client = OpenAIClient()
-      if rl == "chitchat":
+      if (rl == "chitchat") or (rl == None):
          return "Câu hỏi không phù hợp với domain"
       else:
          list_knowledge_base = elastic_storage.get_top_similar_documents(rl, question)
@@ -20,7 +20,7 @@ class ChatBot:
             knowledge_base += kb["context"] + "\n"
          answer = openai_client.call_openai(rl, knowledge_base, question)
          # print("Answer: ", answer)
-         return answer
+         return answer, rl
       
    def load_data(self):
       processor = TextChunkProcessor()

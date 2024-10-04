@@ -16,8 +16,8 @@ async def gen_answer(request: Request):
    body = await request.json()
    question = body["question"]
    chatBot = ChatBot()
-   response = chatBot.gen_answer(question)
-   return {"answer": response}
+   response, rl = chatBot.gen_answer(question)
+   return {"answer": response, "domain": rl}
 
 @app.post("/distance")
 async def get_distance(request: Request, response: Response):
