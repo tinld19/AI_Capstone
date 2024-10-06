@@ -17,5 +17,5 @@ class OCRDoc:
       ocr_processor = OCRProcessor()
       result_data = ocr_processor.predict_OCR(path_file)
       json_extract = OCRDoc.gen_data(result_data)
-      # data_json = json.loads(json_extract)
-      return json_extract
+      data_json = json.loads(json_extract)
+      return data_json

@@ -42,4 +42,5 @@ class LLM_OCR:
       # message_openai = completion.choices[0].message.content.lstrip("\n")
       # message_clean = message_openai.replace("```", "").replace("json", "")
       message_clean = self.model.generate_content(prompt)
-      return message_clean.text
+      output = message_clean.text.replace("```", "").replace("json", "").strip()
+      return output
