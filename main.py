@@ -12,7 +12,7 @@ import os
 app = FastAPI()
 
 @app.post("/gen-answer")
-async def gen_answer(request: Request):
+async def gen_answer_chat(request: Request):
    try:
       body = await request.json()
       question = body["question"]

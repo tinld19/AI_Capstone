@@ -19,3 +19,4 @@ ultralytics
 pillow
 python-multipart
 google-generativeai
+albumentations
