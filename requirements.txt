@@ -20,3 +20,5 @@ pillow
 python-multipart
 google-generativeai
 albumentations
+paddlepaddle
+boto3

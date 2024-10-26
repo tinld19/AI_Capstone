@@ -2,10 +2,10 @@ from .inference.predict import DamageDetector
 import numpy as np
 
 class VisionServices:
-   def detection_damage(self, image_paths):
+   def detection_damage(self, file, image_paths):
       damageDetector = DamageDetector()
-      number_of_damaged, res_proportion, output_path = damageDetector.predict(image_paths)
-      return number_of_damaged, res_proportion, output_path
+      number_of_damaged, res_proportion, output_path, img = damageDetector.predict(file, image_paths)
+      return number_of_damaged, res_proportion, output_path, img
    
 # if __name__ == "__main__":
 #    image_paths = "/Users/mac/Documents/AI_Capstone/AI_Capstone/src/vision/image/img20210724124936-jpg.jpg"

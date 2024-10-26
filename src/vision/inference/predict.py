@@ -3,33 +3,29 @@ import uuid
 from PIL import Image
 import matplotlib.pyplot as plt
 from ultralytics import YOLO
+import cv2
 
 model_path = 'src/vision/weights/container_detection_ver1_1.pt'
 
 class DamageDetector:
-   def __init__(self, save_dir='src/vision/image'):
+   def __init__(self):
       self.model_path = model_path
-      self.save_dir = save_dir
       self.model = YOLO(model_path)
 
-      if not os.path.exists(self.save_dir):
-         os.makedirs(self.save_dir)
-
-   def predict(self, image_paths):
+   def predict(self, file, image_paths):
       results = self.model(image_paths)
       number_of_damaged = results[0].boxes.cls.tolist()
 
       for idx, result in enumerate(results):
          img_with_boxes = result.plot()
+         img_rgb = cv2.cvtColor(img_with_boxes, cv2.COLOR_BGR2RGB) 
          random_id = str(uuid.uuid4())
-         img = Image.fromarray(img_with_boxes)
-         output_path = os.path.join(self.save_dir, f"output_image_{idx}_{random_id}.jpg")
-         img.save(output_path)
-         print(f"Image saved at: {output_path}")
-         
+         img = Image.fromarray(img_rgb)
+         output_path = os.path.join(f"inference_detect/{file.split(".")[0].split("/")[-1]}_{idx}_{random_id}.jpeg")
+               
       res_proportion = self.calculate_bounding_box_areas(results)
       
-      return number_of_damaged, res_proportion, output_path
+      return number_of_damaged, res_proportion, output_path, img
 
    def calculate_bounding_box_areas(self, results):
       areas = []
@@ -48,12 +44,12 @@ class DamageDetector:
                   proportion = 60
                elif area <= 90000:
                   proportion = 70
-               elif are <= 120000:
+               elif area <= 120000:
                   proportion = 80
                else:
                   proportion = 100
                areas.append(proportion)
-      res_proportion = sum(areas)/len(areas)
+      res_proportion = sum(areas)/(len(areas) + 0.1)
       if res_proportion >= 100:
          res_proportion = 100
       return res_proportion

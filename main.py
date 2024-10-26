@@ -1,13 +1,16 @@
+import os
 import uvicorn
 import orjson
+
 from dataclasses import dataclass, field
 from fastapi import FastAPI, Request, Response, File, UploadFile, HTTPException
 from typing import List
+
 from src.chatbot.search import ChatBot
 from src.SeaRoute.sea_route import SeaRoute
 from src.OCR.mainOCR import OCRDoc
 from src.vision.main_vision import VisionServices
-import os
+from src.AWS_S3.file_helper import S3Helper
 
 app = FastAPI()
 
@@ -48,43 +51,42 @@ async def get_location(request: Request, response: Response):
       raise HTTPException(status_code=500, detail=f"Error find location: {str(e)}")
 
 @app.post("/extract-ocr")
-async def extract_ocr(file: UploadFile = File(...)):
+async def extract_ocr(request: Request):
    try:
-      upload_folder = "/tmp_pdf"
-
-      if not os.path.exists(upload_folder):
-         os.makedirs(upload_folder)
-         
-      contents = await file.read()
-      path_file = f"/tmp_pdf/{file.filename}"
-      with open(path_file, "wb") as f:
-         f.write(contents)
+      body = await request.body()
+      item = orjson.loads(body)
+      bucket_name = item.get("bucket_name")
+      path_file = item.get("s3_file")
+      s3Helper = S3Helper()
       ocrDoc = OCRDoc()
-      json_extract = ocrDoc.data_extract(path_file)
+      path_local = os.path.join("./tmp_pdf", path_file.split("/")[-1])
+      path_local = s3Helper.download_pdf_from_s3(bucket_name, path_file, path_local)
+      json_extract = ocrDoc.data_extract(path_local)
       return {"data": json_extract}
    except Exception as e:
       raise HTTPException(status_code=500, detail=f"Error extracting OCR: {str(e)}")
 
 @app.post("/damaged-detect")
-async def damaged_detect(files: List[UploadFile] = File(...)):
+async def damaged_detect(request: Request):
    try:
-      upload_folder = "/tmp_images"
-      if not os.path.exists(upload_folder):
-         os.makedirs(upload_folder)
+      
+      body = await request.body()
+      item = orjson.loads(body)
+      bucket_name = item.get("bucket_name")
+      path_files = item.get("s3_files")
 
+      s3Helper = S3Helper()
+      visionServices = VisionServices()
       total_res = []
 
-      for file in files:
+      for file in path_files:
          number_of_detections = {}
-         contents = await file.read()
-         path_file = os.path.join(upload_folder, file.filename)
-         with open(path_file, "wb") as f:
-            f.write(contents)
-         visionServices = VisionServices()
-         number_of_damaged, res_proportion, output_path = visionServices.detection_damage(path_file)
+         image = s3Helper.read_image_from_s3(bucket_name, file)
+         number_of_damaged, res_proportion, output_path, image_inference = visionServices.detection_damage(file, image)
          number_of_detections["file image"] = output_path
          number_of_detections["number of damage"] = len(number_of_damaged)
          number_of_detections["rate error"] = res_proportion
+         upload_img = s3Helper.upload_image_to_s3(image_inference, bucket_name, output_path)
          total_res.append(number_of_detections)
       return {"detections": total_res}
    except Exception as e:

@@ -30,19 +30,6 @@ class OCRProcessor:
       return image_paths
 
    def predict_OCR(self, file_path, output_folder="output_images"):
-      # if file_path.lower().endswith('.pdf'):
-      #    image_paths = self.convert_pdf_to_images(file_path)
-      # else:
-      #    image_paths = [file_path]
-      # for img_path in image_paths:
-      #    result = self.ocr.ocr(img_path)
-      #    list_text = []
-      #    for res in result:
-      #          for line in res:
-      #             text = line[1][0]
-      #             list_text.append(text)
-      #    data = "\n".join(list_text)
-      # return data
    
       if not os.path.exists(output_folder):
          os.makedirs(output_folder)
@@ -64,7 +51,6 @@ class OCRProcessor:
                for line in res:
                   points = line[0]
                   text = line[1][0] 
-                  confidence = line[1][1]  
                   list_text.append(text)
 
                   points = [(int(x), int(y)) for x, y in points]
@@ -78,9 +64,3 @@ class OCRProcessor:
 
       data = "\n".join(list_text)
       return data
-      
-# if __name__ == "__main__":
-#    ocr_processor = OCRProcessor()
-#    path_file = "/root/AI_Capstone/src/OCR/files/to-khai-hai-quan-xk_2805201309.pdf"
-#    result_data = ocr_processor.predict_OCR(path_file)
-#    print(result_data)

@@ -4,7 +4,7 @@ from elasticsearch import Elasticsearch
 
 # Initialize the model and Elasticsearch client
 model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
-es = Elasticsearch(hosts=["http://elasticsearch:9200"])
+es = Elasticsearch(hosts=["http://es-container:9200"])
 
 if not es.ping():
     raise ValueError("Connection failed")

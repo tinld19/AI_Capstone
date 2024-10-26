@@ -25,6 +25,7 @@ services:
   fastapi:
     build: .
     container_name: fastapi-container
+    image: ai_services:latest
     ports:
       - "8000:8000"
     depends_on:
