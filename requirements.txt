@@ -8,7 +8,6 @@ uvicorn
 scipy
 openai
 singleton-decorator
-elasticsearch
 PyMuPDF
 geopy
 searoute
@@ -20,5 +19,4 @@ pillow
 python-multipart
 google-generativeai
 albumentations
-paddlepaddle
 boto3

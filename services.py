@@ -1,30 +1,18 @@
-# from dataclasses import dataclass, field
-# from fastapi import FastAPI, Request, Response, File, UploadFile
-# from typing import List
-# from src.akaBot.search import ChatBot
-# # import os
-# import orjson
+# import uvicorn
+# from fastapi import FastAPI
 
-# @dataclass
-# class Services:
-#    """API Services"""
-#    app: "FastAPI" = field(default_factory=FastAPI)
-#    request: Request = field(default=None)
-#    response: Response = field(default=None)
+# from app.apis.routes import services
 
-#    # define router here
-#    def __post_init__(self):
-#       """Post init"""
-#       self.app.post("gen-answer")(self.gen_answer)
+# app = FastAPI(title="Parkway")
 
-#    async def gen_answer(self, request: Request):
-#       body = await request.json()
-#       data = orjson.loads(body)
-#       question = data.get("question")
-#       chatBot = ChatBot()
-#       response = chatBot.gen_answer(question)
-#       return {"Answer": response}
+# app.include_router(services.router)
 
-#    @property
-#    def __call__(self):
-#       return self.app
+# if __name__ == "__main__":
+#    uvicorn.run(
+#       "app.main:app",
+#       host="0.0.0.0",
+#       port="8000",
+#       log_level="info",
+#       reload=True,
+#       workers=1
+#    )
